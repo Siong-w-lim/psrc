@@ -1,4 +1,4 @@
-# PSU
+# RPS
 
 ## Supported devices
 * Keithley 2231A
