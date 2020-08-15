@@ -1,4 +1,4 @@
-# RPS
+# PSRC
 
 ## Supported devices
 * Keithley 2231A
