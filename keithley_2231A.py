@@ -31,7 +31,7 @@ def disconnect():
 
 def channel(ch):
     global ps
-    print("Select channel %s" % ch)
+    print("Selected channel %s" % ch)
     ps.write("INST:NSEL %s" % ch)
 
 def voltage(volt):
@@ -46,8 +46,18 @@ def current(amp):
 
 def output(onoff):
     global ps
-    print("Set output %d" % onoff)
-    ps.write("OUTP %d" % onoff)
+    print("Set output %s" % onoff)
+    ps.write("OUTP %s" % onoff)
+
+def info():
+    x = ps.query("OUTP?")
+    print ("Output: %s" % x)
+    x = ps.query("VOLT?")
+    y = ps.query("MEAS:VOLT?")
+    print ("Voltage: %s/%sV" % (y,x))
+    x = ps.query("CURR?")
+    y = ps.query("MEAS:CURR?")
+    print ("Current: %s/%sA" % (y,x))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -55,6 +65,7 @@ if __name__ == "__main__":
     parser.add_argument("-v", "--voltage", help="Set Voltage", type=float)
     parser.add_argument("-a", "--ampere", help="Set Current limit", type=float)
     parser.add_argument("-o", "--output", help="Output on/off", choices=["0", "1"])
+    parser.add_argument("-i", "--info", help="Get Channel Info", action='store_true')
     args = parser.parse_args()
     #print args
     connect()
@@ -67,5 +78,7 @@ if __name__ == "__main__":
         current(args.ampere)
     if args.output is not None:
         output(args.output)
+    if args.info is True:
+        info()
 
     disconnect()
