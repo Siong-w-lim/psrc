@@ -14,11 +14,12 @@ def check_inst():
     if y[0] != "Keithley instruments" or y[1] != "2231A-30-3":
         raise Exception("This is not Keithley 2231A")
 
-def connect():
+def connect(dev):
     global rm, ps
     rm = visa.ResourceManager()
     #print rm.list_resources()
-    ps = rm.open_resource('ASRL/dev/ttyUSB0::INSTR', baud_rate=9600, data_bits=8)
+    dev = 'ASRL' + dev + '::INSTR'
+    ps = rm.open_resource(dev, baud_rate=9600, data_bits=8)
     ps.write_termination = '\n'
     ps.read_termination = '\n'
     ps.write('SYST:REM') #Enable remote Contol
@@ -65,10 +66,11 @@ if __name__ == "__main__":
     parser.add_argument("-v", "--voltage", help="Set Voltage", type=float)
     parser.add_argument("-a", "--ampere", help="Set Current limit", type=float)
     parser.add_argument("-o", "--output", help="Output on/off", choices=["0", "1"])
+    parser.add_argument("-d", "--device", help="Device Path", default="/dev/ttyUSB0")
     parser.add_argument("-i", "--info", help="Get Channel Info", action='store_true')
     args = parser.parse_args()
     #print args
-    connect()
+    connect(args.device)
     check_inst()
     channel(args.channel)
 
