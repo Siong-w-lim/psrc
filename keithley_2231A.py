@@ -12,6 +12,7 @@ def check_inst():
     print(x)
     y = x.split(", ")
     if y[0] != "Keithley instruments" or y[1] != "2231A-30-3":
+        disconnect()
         raise Exception("This is not Keithley 2231A")
 
 def connect(dev):
